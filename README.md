@@ -4,6 +4,6 @@ Aplicação full stack para consultar informações de servidores ativos e apose
 
 ## Estrutura inicial
 
-- `projeto/backend/`: aplicação de backend.
-- `projeto/frontend/`: aplicação web.
-- `projeto/db/`: arquivos do banco de dados.
+- `backend/`: aplicação de backend.
+- `frontend/`: aplicação web.
+- `db/`: arquivos do banco de dados.
