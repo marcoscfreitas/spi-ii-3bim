@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AppLayout } from './components/AppLayout'
+import { SearchForm } from './components/SearchForm'
 import './index.css'
 
 const root = document.getElementById('root')
@@ -26,6 +27,7 @@ createRoot(root).render(
           Consulte informações de aposentados, carreiras e cargos em uma
           interface simples e organizada.
         </p>
+        <SearchForm />
       </section>
     </AppLayout>
   </StrictMode>,
