@@ -1,5 +1,7 @@
 const fieldClassName =
-  'mt-2 w-full rounded-md border border-border bg-surface px-3 py-2 text-body'
+  'mt-2 min-h-12 min-w-0 w-full rounded-lg border border-border bg-surface px-4 py-3 text-[15px] font-normal text-body outline-none transition-colors placeholder:text-muted hover:border-disabled focus:border-link focus:ring-2 focus:ring-link/20'
+
+const labelClassName = 'block min-w-0 text-[15px] font-semibold text-primary'
 
 const estados = [
   'AC',
@@ -33,8 +35,11 @@ const estados = [
 
 export function SearchForm() {
   return (
-    <form aria-label="Filtros de busca" className="mt-8 grid gap-5 md:grid-cols-2">
-      <label className="font-medium text-body">
+    <form
+      aria-label="Filtros de busca"
+      className="mt-8 grid min-w-0 gap-5 rounded-panel border border-border bg-canvas p-5 md:grid-cols-2 md:p-6"
+    >
+      <label className={labelClassName}>
         Nome
         <input
           className={fieldClassName}
@@ -44,7 +49,7 @@ export function SearchForm() {
         />
       </label>
 
-      <label className="font-medium text-body">
+      <label className={labelClassName}>
         Cargo
         <input
           className={fieldClassName}
@@ -54,9 +59,13 @@ export function SearchForm() {
         />
       </label>
 
-      <label className="font-medium text-body">
+      <label className={labelClassName}>
         UF
-        <select className={fieldClassName} defaultValue="" name="uf">
+        <select
+          className={`${fieldClassName} cursor-pointer`}
+          defaultValue=""
+          name="uf"
+        >
           <option value="">Selecione a UF</option>
           {estados.map((estado) => (
             <option key={estado} value={estado}>
@@ -66,7 +75,7 @@ export function SearchForm() {
         </select>
       </label>
 
-      <label className="font-medium text-body">
+      <label className={labelClassName}>
         Órgão
         <input
           className={fieldClassName}
