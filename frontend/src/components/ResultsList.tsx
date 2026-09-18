@@ -24,25 +24,44 @@ const resultadosMockados = [
 
 export function ResultsList() {
   return (
-    <section aria-labelledby="results-title">
-      <h2 id="results-title">Resultados de exemplo</h2>
-      <p>Os registros abaixo são fictícios.</p>
-      <ul>
+    <section aria-labelledby="results-title" className="mt-8">
+      <h2 id="results-title" className="text-[23px] font-semibold text-primary">
+        Resultados de exemplo
+      </h2>
+      <p className="mt-2 text-[15px] text-body">
+        Os registros abaixo são fictícios.
+      </p>
+      <ul className="mt-5 grid gap-4">
         {resultadosMockados.map((resultado) => (
-          <li key={resultado.id}>
-            <h3>{resultado.nome}</h3>
-            <dl>
+          <li
+            key={resultado.id}
+            className="rounded-panel border border-border bg-surface p-5 sm:p-6"
+          >
+            <h3 className="break-words text-lg font-semibold text-primary">
+              {resultado.nome}
+            </h3>
+            <dl className="mt-4 grid gap-4 border-t border-border pt-4 sm:grid-cols-3">
               <div>
-                <dt>Cargo</dt>
-                <dd>{resultado.cargo}</dd>
+                <dt className="text-xs font-semibold uppercase tracking-wide text-body">
+                  Cargo
+                </dt>
+                <dd className="mt-1 break-words text-[15px] text-body">
+                  {resultado.cargo}
+                </dd>
               </div>
               <div>
-                <dt>UF</dt>
-                <dd>{resultado.uf}</dd>
+                <dt className="text-xs font-semibold uppercase tracking-wide text-body">
+                  UF
+                </dt>
+                <dd className="mt-1 text-[15px] text-body">{resultado.uf}</dd>
               </div>
               <div>
-                <dt>Órgão</dt>
-                <dd>{resultado.orgao}</dd>
+                <dt className="text-xs font-semibold uppercase tracking-wide text-body">
+                  Órgão
+                </dt>
+                <dd className="mt-1 break-words text-[15px] text-body">
+                  {resultado.orgao}
+                </dd>
               </div>
             </dl>
           </li>
