@@ -1,12 +1,12 @@
 services:
   db:
-    image: postgres:18-alpine
+    build: ./db
     command: ["tail", "-f", "/dev/null"]
 
   backend:
-    image: python:3.14-slim
+    build: ./backend
     command: ["tail", "-f", "/dev/null"]
 
   frontend:
-    image: node:24-alpine
+    build: ./frontend
     command: ["tail", "-f", "/dev/null"]
