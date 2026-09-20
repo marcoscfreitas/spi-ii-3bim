@@ -1,3 +1,6 @@
+import { useState } from 'react'
+import { Pagination } from './Pagination'
+
 const resultadosMockados = [
   {
     id: 1,
@@ -22,7 +25,17 @@ const resultadosMockados = [
   },
 ]
 
+const itensPorPagina = 2
+
 export function ResultsList() {
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(resultadosMockados.length / itensPorPagina)
+  const firstItem = (currentPage - 1) * itensPorPagina
+  const resultadosDaPagina = resultadosMockados.slice(
+    firstItem,
+    firstItem + itensPorPagina,
+  )
+
   return (
     <section aria-labelledby="results-title" className="mt-8">
       <h2 id="results-title" className="text-[23px] font-semibold text-primary">
@@ -32,7 +45,7 @@ export function ResultsList() {
         Os registros abaixo são fictícios.
       </p>
       <ul className="mt-5 grid gap-4">
-        {resultadosMockados.map((resultado) => (
+        {resultadosDaPagina.map((resultado) => (
           <li
             key={resultado.id}
             className="rounded-panel border border-border bg-surface p-5 sm:p-6"
@@ -67,6 +80,11 @@ export function ResultsList() {
           </li>
         ))}
       </ul>
+      <Pagination
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+        totalPages={totalPages}
+      />
     </section>
   )
 }
