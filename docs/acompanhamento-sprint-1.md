@@ -22,14 +22,17 @@ As entregas técnicas abaixo foram conferidas pelo histórico integrado da branc
 | 21/09 | Não houve entrega integrada. | Nenhum impedimento técnico adicional informado; atividade acumulada para o fechamento da sprint. |
 | 22/09 | Não houve entrega integrada. | Nenhum impedimento técnico adicional informado; atividade acumulada para o fechamento da sprint. |
 | 23/09 | Pedro concluiu `PROJ-12`, atualizou `PROJ-13` até esta data e estruturou o relatório em `PROJ-14`; Marcos concluiu `PROJ-24`, `PROJ-25` e `PROJ-26`; Alex concluiu `PROJ-38`. | O acompanhamento permanece ativo até o último dia da sprint. |
+| 24/09 | Não houve nova entrega integrada. | Nenhum impedimento adicional informado; as pendências finais permaneceram programadas para o fechamento. |
+| 25/09 | Não houve nova entrega integrada. | Nenhum impedimento adicional informado; fechamento mantido para 26/09. |
+| 26/09 | Marcos concluiu `PROJ-27` e `PROJ-28`; Pedro encerrou `PROJ-13` após consolidar o acompanhamento; Alex permaneceu sem pendências. | Filtros finais validados e board conferido na data de encerramento da sprint. |
 
 ## Situação do fechamento
 
-- Pedro: atividades previstas para este lote concluídas; o registro diário deve continuar até 26/09.
-- Marcos: servidor WSGI, conexão ao banco e primeira busca concluídos; `BACK-05` e `BACK-06` ainda estão pendentes na Sprint 1.
-- Alex: atividades previstas para a Sprint 1 concluídas.
-- Pendência após este lote: definir se `BACK-05` e `BACK-06` serão concluídas até 26/09 ou replanejadas para a Sprint 2.
+- Pedro: atividades de infraestrutura, QA e liderança previstas para a Sprint 1 concluídas.
+- Marcos: atividades de banco de dados e backend previstas para a Sprint 1 concluídas, incluindo os filtros finais por cargo, UF e órgão.
+- Alex: atividades de frontend previstas para a Sprint 1 concluídas.
+- Pendências da Sprint 1: nenhuma.
 
-Este log está atualizado até 23/09. Os dias 24 a 26/09 e o estado correspondente das issues no board devem ser registrados somente quando ocorrerem.
+Este log cobre o período completo de 12 a 26/09. O board foi conferido em 26/09 e o registro não inclui atividades futuras.
 
 Este registro deve ser atualizado somente com resultados efetivamente realizados e impedimentos informados pela equipe.
