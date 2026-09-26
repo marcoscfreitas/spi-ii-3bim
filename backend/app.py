@@ -12,13 +12,29 @@ def health() -> dict[str, str]:
 
 
 @app.get("/api/servidores")
-def search_servers_by_name():
+def search_servers():
     name = request.args.get("nome")
+    role = request.args.get("cargo")
+    state = request.args.get("uf")
+    agency = request.args.get("orgao")
+
+    filter_column = "servidor.nome"
+    filter_value = name
+
+    if role is not None:
+        filter_column = "cargo.descricao"
+        filter_value = role
+    elif state is not None:
+        filter_column = "servidor.uf_sigla"
+        filter_value = state
+    elif agency is not None:
+        filter_column = "orgao.nome"
+        filter_value = agency
 
     with get_connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute(
-                """
+                f"""
                 SELECT servidor.id,
                        servidor.nome,
                        cargo.descricao,
@@ -27,10 +43,10 @@ def search_servers_by_name():
                 FROM servidor
                 JOIN cargo ON cargo.id = servidor.cargo_id
                 JOIN orgao ON orgao.id = servidor.orgao_id
-                WHERE servidor.nome = %s
+                WHERE {filter_column} = %s
                 ORDER BY servidor.id
                 """,
-                (name,),
+                (filter_value,),
             )
             servers = cursor.fetchall()
 
