@@ -5,14 +5,23 @@ import { ResultsList, type Servidor } from './components/ResultsList'
 import { SearchForm } from './components/SearchForm'
 import './index.css'
 
+async function buscarServidores(nome?: string) {
+  const search = nome === undefined ? '' : `?${new URLSearchParams({ nome })}`
+  const response = await fetch(`/api/servidores${search}`)
+
+  return response.json() as Promise<Servidor[]>
+}
+
 function App() {
   const [resultados, setResultados] = useState<Servidor[]>([])
 
   useEffect(() => {
-    void fetch('/api/servidores')
-      .then((response) => response.json() as Promise<Servidor[]>)
-      .then(setResultados)
+    void buscarServidores().then(setResultados)
   }, [])
+
+  function handleSearch(nome: string) {
+    void buscarServidores(nome).then(setResultados)
+  }
 
   return (
     <AppLayout>
@@ -33,7 +42,7 @@ function App() {
           Consulte informações de aposentados, carreiras e cargos em uma
           interface simples e organizada.
         </p>
-        <SearchForm />
+        <SearchForm onSearch={handleSearch} />
       </section>
       <ResultsList resultados={resultados} />
     </AppLayout>
