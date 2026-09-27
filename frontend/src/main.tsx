@@ -1,18 +1,20 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AppLayout } from './components/AppLayout'
-import { ResultsList } from './components/ResultsList'
+import { ResultsList, type Servidor } from './components/ResultsList'
 import { SearchForm } from './components/SearchForm'
 import './index.css'
 
-const root = document.getElementById('root')
+function App() {
+  const [resultados, setResultados] = useState<Servidor[]>([])
 
-if (!root) {
-  throw new Error('Elemento raiz nao encontrado')
-}
+  useEffect(() => {
+    void fetch('/api/servidores')
+      .then((response) => response.json() as Promise<Servidor[]>)
+      .then(setResultados)
+  }, [])
 
-createRoot(root).render(
-  <StrictMode>
+  return (
     <AppLayout>
       <section
         aria-labelledby="page-title"
@@ -33,7 +35,19 @@ createRoot(root).render(
         </p>
         <SearchForm />
       </section>
-      <ResultsList />
+      <ResultsList resultados={resultados} />
     </AppLayout>
+  )
+}
+
+const root = document.getElementById('root')
+
+if (!root) {
+  throw new Error('Elemento raiz nao encontrado')
+}
+
+createRoot(root).render(
+  <StrictMode>
+    <App />
   </StrictMode>,
 )
