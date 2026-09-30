@@ -24,6 +24,7 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      API_MAX_CONCURRENT_REQUESTS: ${API_MAX_CONCURRENT_REQUESTS:-2}
     ports:
       - "8000:8000"
     healthcheck:
