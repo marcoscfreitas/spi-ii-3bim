@@ -11,6 +11,13 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+def serialize_servers(servers):
+    return [
+        {"id": id_, "nome": name, "cargo": role, "uf": state, "orgao": agency}
+        for id_, name, role, state, agency in servers
+    ]
+
+
 @app.get("/api/servidores")
 def search_servers():
     name = request.args.get("nome")
@@ -43,13 +50,49 @@ def search_servers():
         values.append(None)
 
     where_clause = " AND ".join(conditions)
+    where_values = tuple(values)
     order_clause = "servidor.id"
     limit_clause = ""
+    offset_clause = ""
+    similar_limit = None
 
     if similar is not None:
         order_clause = "similarity(servidor.nome, %s) DESC, servidor.id"
         values.append(similar)
-        values.append(min(int(request.args.get("limit", 100)), 100))
+        similar_limit = min(int(request.args.get("limit", 100)), 100)
+
+    pagination_requested = "page" in request.args or "page_size" in request.args
+    total = None
+
+    if pagination_requested:
+        page = int(request.args.get("page", 1))
+        page_size = int(request.args.get("page_size", 100))
+        offset = (page - 1) * page_size
+
+        with get_connection() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    f"""
+                    SELECT count(*)
+                    FROM servidor
+                    JOIN cargo ON cargo.id = servidor.cargo_id
+                    JOIN orgao ON orgao.id = servidor.orgao_id
+                    WHERE {where_clause}
+                    """,
+                    where_values,
+                )
+                total = cursor.fetchone()[0]
+
+        if similar_limit is not None:
+            total = min(total, similar_limit)
+            page_size = min(page_size, max(total - offset, 0))
+
+        values.append(page_size)
+        values.append(offset)
+        limit_clause = "LIMIT %s"
+        offset_clause = "OFFSET %s"
+    elif similar_limit is not None:
+        values.append(similar_limit)
         limit_clause = "LIMIT %s"
 
     with get_connection() as connection:
@@ -67,17 +110,18 @@ def search_servers():
                 WHERE {where_clause}
                 ORDER BY {order_clause}
                 {limit_clause}
+                {offset_clause}
                 """,
                 tuple(values),
             )
             servers = cursor.fetchall()
 
-    return jsonify(
-        [
-            {"id": id_, "nome": name, "cargo": role, "uf": state, "orgao": agency}
-            for id_, name, role, state, agency in servers
-        ]
-    )
+    data = serialize_servers(servers)
+
+    if pagination_requested:
+        return jsonify({"dados": data, "total": total})
+
+    return jsonify(data)
 
 
 if __name__ == "__main__":
