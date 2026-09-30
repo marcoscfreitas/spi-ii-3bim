@@ -11,25 +11,29 @@ import './index.css'
 async function buscarServidores(values?: SearchFormValues) {
   const searchParams = new URLSearchParams()
 
-  if (values?.nome) {
-    if (values.modoNome === 'similar') {
-      searchParams.set('similar', values.nome)
+  if (values) {
+    if (values.nome) {
+      if (values.modoNome === 'similar') {
+        searchParams.set('similar', values.nome)
 
-      if (values.limite) {
-        searchParams.set('limit', values.limite)
+        if (values.limite) {
+          searchParams.set('limit', values.limite)
+        }
+      } else {
+        searchParams.set('nome', values.nome)
       }
-    } else {
-      searchParams.set('nome', values.nome)
     }
-  } else if (values) {
-    const individualFilter = [
+
+    const exactFilters = [
       ['cargo', values.cargo],
       ['uf', values.uf],
       ['orgao', values.orgao],
-    ].find(([, value]) => value)
+    ]
 
-    if (individualFilter) {
-      searchParams.set(individualFilter[0], individualFilter[1])
+    for (const [parameter, value] of exactFilters) {
+      if (value) {
+        searchParams.set(parameter, value)
+      }
     }
   }
 
