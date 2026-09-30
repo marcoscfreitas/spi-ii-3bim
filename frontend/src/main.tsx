@@ -21,6 +21,16 @@ async function buscarServidores(values?: SearchFormValues) {
     } else {
       searchParams.set('nome', values.nome)
     }
+  } else if (values) {
+    const individualFilter = [
+      ['cargo', values.cargo],
+      ['uf', values.uf],
+      ['orgao', values.orgao],
+    ].find(([, value]) => value)
+
+    if (individualFilter) {
+      searchParams.set(individualFilter[0], individualFilter[1])
+    }
   }
 
   const search = searchParams.size > 0 ? `?${searchParams}` : ''
