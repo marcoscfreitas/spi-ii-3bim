@@ -4,6 +4,7 @@ from functools import wraps
 from threading import BoundedSemaphore
 
 from flask import Flask, jsonify, request
+from psycopg.errors import QueryCanceled
 
 from database import get_connection
 
@@ -95,8 +96,20 @@ def limit_concurrent_requests(view):
     return limited_view
 
 
+def handle_search_timeout(view):
+    @wraps(view)
+    def timed_view(*args, **kwargs):
+        try:
+            return view(*args, **kwargs)
+        except QueryCanceled:
+            return jsonify({"erro": "tempo limite da consulta excedido"}), 504
+
+    return timed_view
+
+
 @app.get("/api/servidores")
 @limit_concurrent_requests
+@handle_search_timeout
 def search_servers():
     unknown_parameters = sorted(set(request.args) - ALLOWED_PARAMETERS)
     if unknown_parameters:
