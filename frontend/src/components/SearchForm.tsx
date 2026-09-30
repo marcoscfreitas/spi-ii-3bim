@@ -35,15 +35,32 @@ const estados = [
   'TO',
 ]
 
+export interface SearchFormValues {
+  cargo: string
+  limite: string
+  modoNome: 'exata' | 'similar'
+  nome: string
+  orgao: string
+  uf: string
+}
+
 interface SearchFormProps {
-  onSearch: (nome: string) => void
+  onSearch: (values: SearchFormValues) => void
 }
 
 export function SearchForm({ onSearch }: SearchFormProps) {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    onSearch(String(formData.get('nome') ?? ''))
+    onSearch({
+      cargo: String(formData.get('cargo') ?? ''),
+      limite: String(formData.get('limite') ?? ''),
+      modoNome:
+        formData.get('modoNome') === 'similar' ? 'similar' : 'exata',
+      nome: String(formData.get('nome') ?? ''),
+      orgao: String(formData.get('orgao') ?? ''),
+      uf: String(formData.get('uf') ?? ''),
+    })
   }
 
   return (
@@ -59,6 +76,30 @@ export function SearchForm({ onSearch }: SearchFormProps) {
           name="nome"
           placeholder="Digite o nome"
           type="text"
+        />
+      </label>
+
+      <label className={labelClassName}>
+        Tipo de busca por nome
+        <select
+          className={`${fieldClassName} cursor-pointer`}
+          defaultValue="exata"
+          name="modoNome"
+        >
+          <option value="exata">Exata</option>
+          <option value="similar">Similaridade</option>
+        </select>
+      </label>
+
+      <label className={labelClassName}>
+        Limite da busca por similaridade
+        <input
+          className={fieldClassName}
+          defaultValue="100"
+          max="100"
+          min="1"
+          name="limite"
+          type="number"
         />
       </label>
 
@@ -103,7 +144,7 @@ export function SearchForm({ onSearch }: SearchFormProps) {
           className="min-h-12 w-full rounded-pill bg-primary px-6 py-3 text-[15px] font-semibold text-white transition-colors hover:bg-primary-hover focus:outline-none focus:ring-2 focus:ring-link focus:ring-offset-2 sm:w-auto"
           type="submit"
         >
-          Buscar por nome
+          Buscar
         </button>
       </div>
     </form>
