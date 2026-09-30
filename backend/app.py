@@ -1,11 +1,16 @@
+import os
 import re
+from functools import wraps
+from threading import BoundedSemaphore
 
 from flask import Flask, jsonify, request
+from psycopg.errors import QueryCanceled
 
 from database import get_connection
 
 
 app = Flask(__name__)
+search_slots = BoundedSemaphore(int(os.getenv("API_MAX_CONCURRENT_REQUESTS", "2")))
 
 ALLOWED_PARAMETERS = {
     "nome",
@@ -77,7 +82,34 @@ def parse_positive_integer(parameter, default, maximum=None):
     return value
 
 
+def limit_concurrent_requests(view):
+    @wraps(view)
+    def limited_view(*args, **kwargs):
+        if not search_slots.acquire(blocking=False):
+            return jsonify({"erro": "limite de buscas simultaneas excedido"}), 429
+
+        try:
+            return view(*args, **kwargs)
+        finally:
+            search_slots.release()
+
+    return limited_view
+
+
+def handle_search_timeout(view):
+    @wraps(view)
+    def timed_view(*args, **kwargs):
+        try:
+            return view(*args, **kwargs)
+        except QueryCanceled:
+            return jsonify({"erro": "tempo limite da consulta excedido"}), 504
+
+    return timed_view
+
+
 @app.get("/api/servidores")
+@limit_concurrent_requests
+@handle_search_timeout
 def search_servers():
     unknown_parameters = sorted(set(request.args) - ALLOWED_PARAMETERS)
     if unknown_parameters:
