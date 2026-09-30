@@ -17,6 +17,7 @@ def search_servers():
     role = request.args.get("cargo")
     state = request.args.get("uf")
     agency = request.args.get("orgao")
+    similar = request.args.get("similar")
 
     filters = (
         ("servidor.nome", name),
@@ -32,11 +33,24 @@ def search_servers():
             conditions.append(f"{column} = %s")
             values.append(value)
 
+    if similar is not None:
+        similar = " ".join(similar.replace("%", " ").split())
+        conditions.append("servidor.nome %% %s")
+        values.append(similar)
+
     if not conditions:
         conditions.append("servidor.nome = %s")
         values.append(None)
 
     where_clause = " AND ".join(conditions)
+    order_clause = "servidor.id"
+    limit_clause = ""
+
+    if similar is not None:
+        order_clause = "similarity(servidor.nome, %s) DESC, servidor.id"
+        values.append(similar)
+        values.append(min(int(request.args.get("limit", 100)), 100))
+        limit_clause = "LIMIT %s"
 
     with get_connection() as connection:
         with connection.cursor() as cursor:
@@ -51,7 +65,8 @@ def search_servers():
                 JOIN cargo ON cargo.id = servidor.cargo_id
                 JOIN orgao ON orgao.id = servidor.orgao_id
                 WHERE {where_clause}
-                ORDER BY servidor.id
+                ORDER BY {order_clause}
+                {limit_clause}
                 """,
                 tuple(values),
             )
