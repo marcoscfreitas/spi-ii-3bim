@@ -8,6 +8,7 @@ export interface Servidor {
 
 interface ResultsListProps {
   resultados: Servidor[]
+  totalResultados: number
 }
 
 function EmptyResults() {
@@ -30,7 +31,10 @@ function EmptyResults() {
   )
 }
 
-export function ResultsList({ resultados }: ResultsListProps) {
+export function ResultsList({
+  resultados,
+  totalResultados,
+}: ResultsListProps) {
   if (resultados.length === 0) {
     return <EmptyResults />
   }
@@ -44,8 +48,8 @@ export function ResultsList({ resultados }: ResultsListProps) {
         Resultados
       </h2>
       <p className="mt-2 text-[15px] text-body">
-        {resultados.length}{' '}
-        {resultados.length === 1
+        {totalResultados}{' '}
+        {totalResultados === 1
           ? 'registro encontrado.'
           : 'registros encontrados.'}
       </p>
