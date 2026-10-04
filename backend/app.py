@@ -62,13 +62,38 @@ SQL_INJECTION_PATTERN = re.compile(
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health():
+    return success_response({"status": "ok"}, "api disponivel")
+
+
+def success_response(data, message, pagination=None):
+    response = {
+        "sucesso": True,
+        "mensagem": message,
+        "dados": data,
+    }
+    if pagination is not None:
+        response["paginacao"] = pagination
+
+    return jsonify(response), 200
+
+
+def error_response(message, status_code):
+    return (
+        jsonify(
+            {
+                "sucesso": False,
+                "mensagem": message,
+                "dados": None,
+            }
+        ),
+        status_code,
+    )
 
 
 @app.errorhandler(404)
 def resource_not_found(_error):
-    return jsonify({"erro": "recurso nao encontrado"}), 404
+    return error_response("recurso nao encontrado", 404)
 
 
 def serialize_servers(servers):
@@ -146,7 +171,7 @@ def limit_concurrent_requests(view):
     @wraps(view)
     def limited_view(*args, **kwargs):
         if not search_slots.acquire(blocking=False):
-            return jsonify({"erro": "limite de buscas simultaneas excedido"}), 429
+            return error_response("limite de buscas simultaneas excedido", 429)
 
         try:
             return view(*args, **kwargs)
@@ -162,7 +187,7 @@ def handle_search_timeout(view):
         try:
             return view(*args, **kwargs)
         except QueryCanceled:
-            return jsonify({"erro": "tempo limite da consulta excedido"}), 504
+            return error_response("tempo limite da consulta excedido", 504)
 
     return timed_view
 
@@ -173,7 +198,9 @@ def handle_search_timeout(view):
 def search_servers():
     unknown_parameters = sorted(set(request.args) - ALLOWED_PARAMETERS)
     if unknown_parameters:
-        return jsonify({"erro": f"parametro desconhecido: {unknown_parameters[0]}"}), 400
+        return error_response(
+            f"parametro desconhecido: {unknown_parameters[0]}", 400
+        )
 
     try:
         name = (
@@ -216,7 +243,7 @@ def search_servers():
             page = parse_positive_integer("page", 1, maximum=2_147_483_647)
             page_size = parse_positive_integer("page_size", 100, maximum=100)
     except ValueError as error:
-        return jsonify({"erro": str(error)}), 400
+        return error_response(str(error), 400)
 
     filters = (
         ("servidor.nome", name),
@@ -275,7 +302,14 @@ def search_servers():
         if (total == 0 and page > 1) or (
             total_pages > 0 and page > total_pages
         ):
-            return jsonify({"erro": "pagina inexistente"}), 404
+            return error_response("pagina inexistente", 404)
+
+        pagination = {
+            "pagina": page,
+            "tamanho_pagina": page_size,
+            "total_registros": total,
+            "total_paginas": total_pages,
+        }
 
         if similar_limit is not None:
             page_size = min(page_size, max(total - offset, 0))
@@ -312,33 +346,29 @@ def search_servers():
     data = serialize_servers(servers)
 
     if not data:
-        return (
-            jsonify(
-                {
-                    "erro": no_results_message(
-                        name,
-                        role,
-                        state,
-                        agency,
-                        similar,
-                    )
-                }
+        return error_response(
+            no_results_message(
+                name,
+                role,
+                state,
+                agency,
+                similar,
             ),
             404,
         )
 
+    message = (
+        "registro encontrado"
+        if len(data) == 1
+        else "multiplos registros encontrados"
+    )
+
     if pagination_requested:
-        response = {"dados": data, "total": total}
-        if name is not None and total > 1:
-            response["mensagem"] = "multiplos registros encontrados"
-        return jsonify(response)
+        if total > 1:
+            message = "multiplos registros encontrados"
+        return success_response(data, message, pagination)
 
-    if name is not None and len(data) > 1:
-        return jsonify(
-            {"mensagem": "multiplos registros encontrados", "dados": data}
-        )
-
-    return jsonify(data)
+    return success_response(data, message)
 
 
 if __name__ == "__main__":
