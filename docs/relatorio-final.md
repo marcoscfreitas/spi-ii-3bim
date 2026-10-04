@@ -66,6 +66,23 @@ Registrar:
 
 [Preencher no fechamento com as buscas, paginação e estados realmente integrados à API.]
 
+### 7.3 Comportamento sob carga
+
+Em 04/10/2026, a API e o PostgreSQL foram executados pela composição Docker do projeto. O banco de teste recebeu 100.000 servidores sintéticos, gerados com `generate_series(1, 100000)`, todos associados a um cargo, um órgão e à UF RS. A carga usou a busca `GET /api/servidores?similar=Servidor&limit=100`, que percorre o caminho completo entre API e banco. O backend estava configurado com um processo Gunicorn, quatro threads, limite de duas buscas simultâneas e timeout SQL de 2.000 ms.
+
+No cenário de capacidade, foram realizadas 20 requisições com concorrência 2. Todas retornaram HTTP 200, sem erro de transporte. A execução durou 2,921 s, com vazão de 6,85 requisições por segundo, latência mediana de 276,08 ms, p95 de 367,76 ms e máxima de 378,41 ms. Após a carga, o endpoint de saúde respondeu HTTP 200 em 23,34 ms.
+
+No cenário de sobrecarga, foram realizadas 200 requisições com concorrência 32. Duas buscas retornaram HTTP 200 e 198 foram rejeitadas com HTTP 429 e a mensagem JSON `limite de buscas simultaneas excedido`. Não houve erro de transporte nem status inesperado. As rejeições tiveram latência mediana de 34,12 ms e p95 de 43,66 ms; as duas buscas aceitas concluíram entre 363,25 ms e 364,60 ms. Após a carga, o endpoint de saúde respondeu HTTP 200 em 2,78 ms. O serviço permaneceu disponível e o excedente falhou de forma controlada, atendendo ao critério do teste.
+
+Os cenários podem ser repetidos sem dependências adicionais:
+
+```powershell
+python tests/load_test.py "http://localhost:8000/api/servidores?similar=Servidor&limit=100" --requests 20 --concurrency 2 --timeout 10
+python tests/load_test.py "http://localhost:8000/api/servidores?similar=Servidor&limit=100" --requests 200 --concurrency 32 --timeout 10
+```
+
+Os resultados completos estão em [teste-carga-capacidade-2026-10-04.json](./evidencias/teste-carga-capacidade-2026-10-04.json) e [teste-carga-2026-10-04.json](./evidencias/teste-carga-2026-10-04.json).
+
 ## 8. Divisão das tasks e histórico de commits
 
 Incluir uma tabela com:
@@ -108,7 +125,10 @@ Separar resultados aprovados, reprovados, bloqueados e não executados.
 
 ## 14. Limitações conhecidas
 
-[Registrar somente limitações verificadas em testes ou explicitamente identificadas na implementação.]
+- A medição foi feita localmente, em containers, com 100.000 registros sintéticos e sem latência de rede externa. Os números não representam diretamente a base pública completa nem um ambiente de produção.
+- O limite de duas buscas simultâneas preservou a disponibilidade, mas rejeitou 198 de 200 requisições no cenário com concorrência 32. A vazão total de 436,52 respostas por segundo nesse cenário representa principalmente rejeições HTTP 429; a vazão observada de buscas concluídas foi 6,85 requisições por segundo no cenário com concorrência 2.
+- A consulta ampla por similaridade usada no teste correspondeu aos 100.000 registros. O plano de execução fez varredura sequencial da tabela, calculou similaridade para todos os resultados e aplicou ordenação `top-N`; isoladamente, essa consulta levou 294,303 ms. Esse ponto deve orientar a avaliação de índices e seletividade em BD-09/PROJ-57 com a base representativa.
+- Não foram executados teste prolongado de estabilidade, distribuição entre múltiplas instâncias ou medição com o conjunto público completo.
 
 ## 15. Conclusão
 
