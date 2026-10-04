@@ -22,6 +22,35 @@ ALLOWED_PARAMETERS = {
     "page",
     "page_size",
 }
+VALID_UFS = {
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RJ",
+    "RN",
+    "RS",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO",
+}
 SEARCH_VALUE_PATTERN = re.compile(r"[\w\sÀ-ÿ.,'()&/+ºª-]+", re.UNICODE)
 SQL_INJECTION_PATTERN = re.compile(
     r"--|/\*|\*/|;|\bunion\s+select\b|\bdrop\s+table\b|"
@@ -35,6 +64,11 @@ SQL_INJECTION_PATTERN = re.compile(
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok"}
+
+
+@app.errorhandler(404)
+def resource_not_found(_error):
+    return jsonify({"erro": "recurso nao encontrado"}), 404
 
 
 def serialize_servers(servers):
@@ -61,7 +95,12 @@ def normalize_search_value(parameter, value):
     if parameter == "uf":
         if re.fullmatch(r"[A-Za-z]{2}", normalized) is None:
             raise ValueError("parametro invalido: uf")
-        return normalized.upper()
+
+        normalized = normalized.upper()
+        if normalized not in VALID_UFS:
+            raise ValueError("uf invalida")
+
+        return normalized
 
     return normalized
 
@@ -80,6 +119,27 @@ def parse_positive_integer(parameter, default, maximum=None):
         raise ValueError(f"parametro invalido: {parameter}")
 
     return value
+
+
+def no_results_message(name, role, state, agency, similar):
+    informed_filters = [
+        value
+        for value in (name, role, state, agency, similar)
+        if value is not None
+    ]
+
+    if len(informed_filters) != 1:
+        return "nenhum registro encontrado"
+    if name is not None:
+        return "nome nao encontrado"
+    if role is not None:
+        return "cargo nao encontrado"
+    if state is not None:
+        return "nenhum registro encontrado para a uf informada"
+    if agency is not None:
+        return "orgao nao encontrado"
+
+    return "nenhum nome similar encontrado"
 
 
 def limit_concurrent_requests(view):
@@ -210,6 +270,14 @@ def search_servers():
 
         if similar_limit is not None:
             total = min(total, similar_limit)
+
+        total_pages = (total + page_size - 1) // page_size
+        if (total == 0 and page > 1) or (
+            total_pages > 0 and page > total_pages
+        ):
+            return jsonify({"erro": "pagina inexistente"}), 404
+
+        if similar_limit is not None:
             page_size = min(page_size, max(total - offset, 0))
 
         values.append(page_size)
@@ -243,8 +311,32 @@ def search_servers():
 
     data = serialize_servers(servers)
 
+    if not data:
+        return (
+            jsonify(
+                {
+                    "erro": no_results_message(
+                        name,
+                        role,
+                        state,
+                        agency,
+                        similar,
+                    )
+                }
+            ),
+            404,
+        )
+
     if pagination_requested:
-        return jsonify({"dados": data, "total": total})
+        response = {"dados": data, "total": total}
+        if name is not None and total > 1:
+            response["mensagem"] = "multiplos registros encontrados"
+        return jsonify(response)
+
+    if name is not None and len(data) > 1:
+        return jsonify(
+            {"mensagem": "multiplos registros encontrados", "dados": data}
+        )
 
     return jsonify(data)
 
