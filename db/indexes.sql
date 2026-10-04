@@ -1,7 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 
 CREATE INDEX idx_servidor_nome_trgm
-    ON servidor USING gin (nome gin_trgm_ops);
+    ON servidor USING gist (nome gist_trgm_ops);
 
 CREATE INDEX idx_cargo_descricao_trgm
     ON cargo USING gin (descricao gin_trgm_ops);
