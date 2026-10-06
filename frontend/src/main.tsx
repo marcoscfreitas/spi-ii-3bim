@@ -1,4 +1,4 @@
-import { StrictMode, useEffect, useState } from 'react'
+import { StrictMode, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { AppLayout } from './components/AppLayout'
 import { Pagination } from './components/Pagination'
@@ -23,6 +23,37 @@ interface ApiResponse {
   }
 }
 
+function isServidor(payload: unknown): payload is Servidor {
+  if (!payload || typeof payload !== 'object') {
+    return false
+  }
+
+  const candidate = payload as Partial<Servidor>
+
+  return (
+    typeof candidate.id === 'number' &&
+    typeof candidate.nome === 'string' &&
+    typeof candidate.cargo === 'string' &&
+    (typeof candidate.uf === 'string' || candidate.uf === null) &&
+    typeof candidate.orgao === 'string'
+  )
+}
+
+function isPagination(payload: unknown): payload is ApiResponse['paginacao'] {
+  if (!payload || typeof payload !== 'object') {
+    return false
+  }
+
+  const candidate = payload as NonNullable<ApiResponse['paginacao']>
+
+  return (
+    typeof candidate.pagina === 'number' &&
+    typeof candidate.tamanho_pagina === 'number' &&
+    typeof candidate.total_registros === 'number' &&
+    typeof candidate.total_paginas === 'number'
+  )
+}
+
 function isApiResponse(payload: unknown): payload is ApiResponse {
   if (!payload || typeof payload !== 'object') {
     return false
@@ -30,11 +61,19 @@ function isApiResponse(payload: unknown): payload is ApiResponse {
 
   const candidate = payload as Partial<ApiResponse>
 
-  return (
-    typeof candidate.sucesso === 'boolean' &&
-    typeof candidate.mensagem === 'string' &&
-    'dados' in candidate
-  )
+  if (
+    typeof candidate.sucesso !== 'boolean' ||
+    typeof candidate.mensagem !== 'string' ||
+    !('dados' in candidate) ||
+    (candidate.paginacao !== undefined &&
+      !isPagination(candidate.paginacao))
+  ) {
+    return false
+  }
+
+  return candidate.sucesso
+    ? Array.isArray(candidate.dados) && candidate.dados.every(isServidor)
+    : candidate.dados === null
 }
 
 async function buscarServidores(page: number, values?: SearchFormValues) {
@@ -89,6 +128,18 @@ async function buscarServidores(page: number, values?: SearchFormValues) {
     throw new Error('O serviço retornou uma resposta inválida.')
   }
 
+  if (
+    response.status === 404 &&
+    !payload.sucesso &&
+    payload.mensagem !== 'pagina inexistente'
+  ) {
+    return {
+      resultados: [],
+      totalPaginas: 0,
+      totalResultados: 0,
+    }
+  }
+
   if (!response.ok || !payload.sucesso) {
     throw new Error(payload.mensagem || 'Não foi possível concluir a busca.')
   }
@@ -106,7 +157,7 @@ function App() {
   const [resultados, setResultados] = useState<Servidor[]>([])
   const [totalPaginas, setTotalPaginas] = useState(0)
   const [totalResultados, setTotalResultados] = useState(0)
-  const [emCarregamento, setEmCarregamento] = useState(true)
+  const [emCarregamento, setEmCarregamento] = useState(false)
   const [mensagemErro, setMensagemErro] = useState<string | null>(null)
 
   function atualizarResultados({
@@ -140,13 +191,18 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    void executarBusca(1)
-  }, [])
-
   function handleSearch(values: SearchFormValues) {
     setFiltros(values)
     setPaginaAtual(1)
+
+    if (!values.nome && !values.cargo && !values.uf && !values.orgao) {
+      setResultados([])
+      setTotalPaginas(0)
+      setTotalResultados(0)
+      setMensagemErro('Informe ao menos um filtro para realizar a busca.')
+      return
+    }
+
     void executarBusca(1, values)
   }
 
