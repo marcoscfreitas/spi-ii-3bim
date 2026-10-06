@@ -28,13 +28,13 @@ Até o corte, a divisão efetivamente entregue foi:
 
 | Integrante | Sprint 1 | Sprint 2 concluída até 06/10/2026 |
 |---|---|---|
-| Pedro | `INF-01` a `INF-08`, `QA-01`, `QA-02`, `LID-01` e `LID-02` | `INF-09` a `INF-12`, `QA-03` a `QA-06` e `LID-03` |
+| Pedro | `INF-01` a `INF-08`, `QA-01`, `QA-02`, `LID-01` e `LID-02` | `INF-09` a `INF-12`, `QA-03` a `QA-06`, `LID-03` e `LID-04` |
 | Marcos | `BD-01` a `BD-08` e `BACK-01` a `BACK-06` | `BACK-07` a `BACK-15` e `BD-09` |
 | Alex | `FRONT-01` a `FRONT-10` | `FRONT-11` a `FRONT-20` |
 
 Permanecem fora deste corte as atividades ainda não concluídas da Sprint 2:
-`LID-04`, `LID-05` e `LID-06`, de Pedro. A atividade opcional `BONUS-01`
-não integra a carga planejada das sprints e não foi iniciada.
+`LID-05` e `LID-06`, de Pedro. A atividade opcional `BONUS-01` não integra a
+carga planejada das sprints e não foi iniciada.
 
 ## 4. Metodologia e organização das sprints
 
@@ -147,7 +147,7 @@ O acompanhamento detalhado da primeira sprint está em
 | 03/10 | Sem entrega integrada | Sem entrega integrada | Sem entrega integrada |
 | 04/10 | `QA-03/PROJ-43`, `QA-04/PROJ-44`, `QA-05/PROJ-45`, `QA-06/PROJ-46` | `BACK-11/PROJ-55`, `BACK-12/PROJ-56`, `BD-09/PROJ-57`, `BACK-13/PROJ-58` | `FRONT-16/PROJ-66`, `FRONT-17/PROJ-67`, `FRONT-18/PROJ-68`, `FRONT-19/PROJ-69` |
 | 05/10 | Sem entrega integrada | Sem entrega integrada | Sem entrega integrada |
-| 06/10 | `LID-03/PROJ-47` | `BACK-14/PROJ-59`, `BACK-15/PROJ-60` | `FRONT-20/PROJ-70` |
+| 06/10 | `LID-03/PROJ-47`, `LID-04/PROJ-48` | `BACK-14/PROJ-59`, `BACK-15/PROJ-60` | `FRONT-20/PROJ-70` |
 
 ### 8.3 Histórico de commits por integrante
 
@@ -174,10 +174,12 @@ O acompanhamento detalhado da primeira sprint está em
 | 04/10 | `QA-04/PROJ-44` | `569da1f` | resultados e limitações da carga registrados |
 | 04/10 | `QA-05/PROJ-45` | `98f891d` | cenários de erro executados |
 | 04/10 | `QA-06/PROJ-46` | `49fe3e6` | proteção contra SQL injection validada |
+| 06/10 | `LID-03/PROJ-47` | `3acd6e5` | divisão das tasks e histórico de commits consolidados |
+| 06/10 | `LID-04/PROJ-48` | este commit | burndown das duas sprints incluído |
 
 `INF-02/PROJ-4` foi a organização do backlog e do quadro no Jira, sem commit de
-código. O hash de `LID-03/PROJ-47` será acrescentado ao histórico após a criação
-do commit que materializa esta consolidação.
+código. `LID-04/PROJ-48` identifica o próprio commit que contém esta tabela e o
+gráfico; seu hash não pode ser autorreferenciado sem alterar o hash novamente.
 
 #### Marcos
 
@@ -235,7 +237,63 @@ do commit que materializa esta consolidação.
 
 ## 9. Burndown
 
-[Inserir o gráfico consolidado e explicar desvios entre Story Points planejados e concluídos.]
+![Burndown das Sprints 1 e 2](./burndown.svg)
+
+O [gráfico em SVG](./burndown.svg) usa a carga planejada do backlog: 56 Story
+Points na Sprint 1 e 57 na Sprint 2. A atividade opcional `BONUS-01` foi
+excluída porque não faz parte desses totais e não foi iniciada. A linha ideal
+reduz a carga de forma linear entre o início e o último dia de cada sprint. A
+linha real reduz os pontos na data em que a task foi concluída e deixou uma
+evidência verificável no acompanhamento ou no histórico Git.
+
+### 9.1 Dados da Sprint 1
+
+| Data | Tasks concluídas na data | SP concluídos | SP restantes |
+|---|---|---:|---:|
+| Início | — | 0 | 56 |
+| 12/09 | `PROJ-3` | 1 | 55 |
+| 13/09 | `PROJ-4`, `PROJ-15`, `PROJ-16`, `PROJ-29`, `PROJ-30` | 7 | 48 |
+| 14/09 | `PROJ-5`, `PROJ-17`, `PROJ-31` | 5 | 43 |
+| 15/09 | `PROJ-6`, `PROJ-18`, `PROJ-32` | 5 | 38 |
+| 16/09 | `PROJ-7`, `PROJ-19`, `PROJ-33` | 4 | 34 |
+| 17/09 | — | 0 | 34 |
+| 18/09 | `PROJ-8`, `PROJ-9`, `PROJ-20`, `PROJ-34`, `PROJ-35` | 9 | 25 |
+| 19/09 | — | 0 | 25 |
+| 20/09 | `PROJ-10`, `PROJ-11`, `PROJ-21`, `PROJ-22`, `PROJ-23`, `PROJ-36`, `PROJ-37` | 11 | 14 |
+| 21/09 | — | 0 | 14 |
+| 22/09 | — | 0 | 14 |
+| 23/09 | `PROJ-12`, `PROJ-14`, `PROJ-24`, `PROJ-25`, `PROJ-26`, `PROJ-38` | 10 | 4 |
+| 24/09 | — | 0 | 4 |
+| 25/09 | — | 0 | 4 |
+| 26/09 | `PROJ-13`, `PROJ-27`, `PROJ-28` | 4 | 0 |
+
+A Sprint 1 consumiu os 56 pontos planejados e encerrou sem saldo em 26/09. Os
+trechos horizontais representam dias sem conclusão registrada, não ausência de
+trabalho.
+
+### 9.2 Dados da Sprint 2 no corte de 06/10/2026
+
+| Data | Tasks concluídas na data | SP concluídos | SP restantes |
+|---|---|---:|---:|
+| Início | — | 0 | 57 |
+| 27/09 | `PROJ-39`, `PROJ-51`, `PROJ-61`, `PROJ-62` | 8 | 49 |
+| 28/09 | — | 0 | 49 |
+| 29/09 | — | 0 | 49 |
+| 30/09 | `PROJ-40`, `PROJ-41`, `PROJ-42`, `PROJ-52`, `PROJ-53`, `PROJ-54`, `PROJ-63`, `PROJ-64`, `PROJ-65` | 17 | 32 |
+| 01/10 | — | 0 | 32 |
+| 02/10 | — | 0 | 32 |
+| 03/10 | — | 0 | 32 |
+| 04/10 | `PROJ-43` a `PROJ-46`, `PROJ-55` a `PROJ-58`, `PROJ-66` a `PROJ-69` | 21 | 11 |
+| 05/10 | — | 0 | 11 |
+| 06/10 | `PROJ-47`, `PROJ-48`, `PROJ-59`, `PROJ-60`, `PROJ-70` | 8 | 3 |
+| 07–11/10 | Período futuro no corte | — | — |
+
+Até 06/10, 54 dos 57 pontos da Sprint 2 estavam concluídos. O saldo de 3 pontos
+corresponde a `LID-05/PROJ-49` (2 SP) e `LID-06/PROJ-50` (1 SP). Na mesma data,
+a linha ideal teria 19 pontos restantes; a diferença de 16 pontos decorre da
+conclusão antecipada de parte do escopo e da integração em lotes, visível nas
+quedas concentradas de 30/09, 04/10 e 06/10. Não foram projetados resultados
+para 07–11/10.
 
 ## 10. Estratégia e resultados dos testes
 
