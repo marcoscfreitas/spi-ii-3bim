@@ -1,6 +1,6 @@
 # Relatório final do projeto
 
-> Documento em consolidação. O corte desta versão é 06/10/2026. As seções
+> Documento em consolidação. O corte desta versão é 09/10/2026. As seções
 > explicitamente marcadas como pendentes dependem do encerramento da Sprint 2 e
 > não são apresentadas como concluídas.
 
@@ -26,15 +26,14 @@ Apresentar o desenvolvimento da aplicação full stack para consulta de informa�
 
 Até o corte, a divisão efetivamente entregue foi:
 
-| Integrante | Sprint 1 | Sprint 2 concluída até 06/10/2026 |
+| Integrante | Sprint 1 | Sprint 2 concluída até 09/10/2026 |
 |---|---|---|
-| Pedro | `INF-01` a `INF-08`, `QA-01`, `QA-02`, `LID-01` e `LID-02` | `INF-09` a `INF-12`, `QA-03` a `QA-06`, `LID-03` e `LID-04` |
+| Pedro | `INF-01` a `INF-08`, `QA-01`, `QA-02`, `LID-01` e `LID-02` | `INF-09` a `INF-12`, `QA-03` a `QA-06` e `LID-03` a `LID-06` |
 | Marcos | `BD-01` a `BD-08` e `BACK-01` a `BACK-06` | `BACK-07` a `BACK-15` e `BD-09` |
 | Alex | `FRONT-01` a `FRONT-10` | `FRONT-11` a `FRONT-20` |
 
-Permanecem fora deste corte as atividades ainda não concluídas da Sprint 2:
-`LID-05` e `LID-06`, de Pedro. A atividade opcional `BONUS-01` não integra a
-carga planejada das sprints e não foi iniciada.
+As atividades normais das duas sprints foram concluídas. A atividade opcional
+`BONUS-01` não integra a carga planejada das sprints e não foi iniciada.
 
 ## 4. Metodologia e organização das sprints
 
@@ -100,9 +99,9 @@ Os resultados completos estão em [teste-carga-capacidade-2026-10-04.json](./evi
 ### 8.1 Critério de apuração
 
 O histórico abaixo foi conferido na linha integrada de `dev` até o commit
-`50259be`, sem merges, e nos commits `24a866c`, `0a28f98` e `6ab7768`,
-produzidos em 06/10/2026 nas branches das tasks em fechamento. Foram usados a
-data, o autor e a mensagem registrados em cada commit. A atividade
+`5c57631`, sem merges, e no commit `cc1ebfa`, produzido em 09/10/2026 na branch
+das tasks em fechamento. Foram usados a data, o autor e a mensagem registrados
+em cada commit. A atividade
 `INF-02/PROJ-4`, concluída no Jira sem alteração de código, foi mantida no
 registro diário com essa ressalva. `LID-03/PROJ-47` corresponde à consolidação
 desta seção e, por isso, aparece no corte depois do histórico-base auditado.
@@ -134,7 +133,7 @@ O acompanhamento detalhado da primeira sprint está em
 | 25/09 | Sem entrega integrada | Sem entrega integrada | Sem entrega integrada |
 | 26/09 | conclusão de `LID-01/PROJ-13` | `BACK-05/PROJ-27`, `BACK-06/PROJ-28` | Sem entrega integrada |
 
-#### Sprint 2 até 06/10/2026
+#### Sprint 2 até 09/10/2026
 
 | Data | Pedro | Marcos | Alex |
 |---|---|---|---|
@@ -148,6 +147,9 @@ O acompanhamento detalhado da primeira sprint está em
 | 04/10 | `QA-03/PROJ-43`, `QA-04/PROJ-44`, `QA-05/PROJ-45`, `QA-06/PROJ-46` | `BACK-11/PROJ-55`, `BACK-12/PROJ-56`, `BD-09/PROJ-57`, `BACK-13/PROJ-58` | `FRONT-16/PROJ-66`, `FRONT-17/PROJ-67`, `FRONT-18/PROJ-68`, `FRONT-19/PROJ-69` |
 | 05/10 | Sem entrega integrada | Sem entrega integrada | Sem entrega integrada |
 | 06/10 | `LID-03/PROJ-47`, `LID-04/PROJ-48` | `BACK-14/PROJ-59`, `BACK-15/PROJ-60` | `FRONT-20/PROJ-70` |
+| 07/10 | Sem entrega integrada | Sem pendências normais | Sem pendências normais |
+| 08/10 | Sem entrega integrada | Sem pendências normais | Sem pendências normais |
+| 09/10 | `LID-05/PROJ-49`, `LID-06/PROJ-50` | Sem pendências normais | Sem pendências normais |
 
 ### 8.3 Histórico de commits por integrante
 
@@ -176,10 +178,13 @@ O acompanhamento detalhado da primeira sprint está em
 | 04/10 | `QA-06/PROJ-46` | `49fe3e6` | proteção contra SQL injection validada |
 | 06/10 | `LID-03/PROJ-47` | `3acd6e5` | divisão das tasks e histórico de commits consolidados |
 | 06/10 | `LID-04/PROJ-48` | este commit | burndown das duas sprints incluído |
+| 09/10 | `LID-05/PROJ-49` | `cc1ebfa` | pontos fortes, fracos, dificuldades e impedimentos registrados |
+| 09/10 | `LID-06/PROJ-50` | este commit | inicialização a partir de clone limpo validada e documentada |
 
 `INF-02/PROJ-4` foi a organização do backlog e do quadro no Jira, sem commit de
-código. `LID-04/PROJ-48` identifica o próprio commit que contém esta tabela e o
-gráfico; seu hash não pode ser autorreferenciado sem alterar o hash novamente.
+código. `LID-04/PROJ-48` e `LID-06/PROJ-50` identificam os próprios commits que
+incluem seus registros nesta tabela; seus hashes não podem ser
+autorreferenciados sem alterar os hashes novamente.
 
 #### Marcos
 
@@ -271,7 +276,7 @@ A Sprint 1 consumiu os 56 pontos planejados e encerrou sem saldo em 26/09. Os
 trechos horizontais representam dias sem conclusão registrada, não ausência de
 trabalho.
 
-### 9.2 Dados da Sprint 2 no corte de 06/10/2026
+### 9.2 Dados da Sprint 2 no corte de 09/10/2026
 
 | Data | Tasks concluídas na data | SP concluídos | SP restantes |
 |---|---|---:|---:|
@@ -286,14 +291,15 @@ trabalho.
 | 04/10 | `PROJ-43` a `PROJ-46`, `PROJ-55` a `PROJ-58`, `PROJ-66` a `PROJ-69` | 21 | 11 |
 | 05/10 | — | 0 | 11 |
 | 06/10 | `PROJ-47`, `PROJ-48`, `PROJ-59`, `PROJ-60`, `PROJ-70` | 8 | 3 |
-| 07–11/10 | Período futuro no corte | — | — |
+| 07/10 | — | 0 | 3 |
+| 08/10 | — | 0 | 3 |
+| 09/10 | `PROJ-49`, `PROJ-50` | 3 | 0 |
+| 10–11/10 | Período futuro no corte | — | — |
 
-Até 06/10, 54 dos 57 pontos da Sprint 2 estavam concluídos. O saldo de 3 pontos
-corresponde a `LID-05/PROJ-49` (2 SP) e `LID-06/PROJ-50` (1 SP). Na mesma data,
-a linha ideal teria 19 pontos restantes; a diferença de 16 pontos decorre da
-conclusão antecipada de parte do escopo e da integração em lotes, visível nas
-quedas concentradas de 30/09, 04/10 e 06/10. Não foram projetados resultados
-para 07–11/10.
+A Sprint 2 concluiu os 57 pontos planejados em 09/10, dois dias antes do fim do
+período. As quedas concentradas em 30/09, 04/10 e 06/10 refletem a integração
+em lotes; os 3 pontos finais correspondem a `LID-05/PROJ-49` e
+`LID-06/PROJ-50`. Não foram projetados resultados para 10–11/10.
 
 ## 10. Estratégia e resultados dos testes
 
@@ -309,17 +315,82 @@ Consolidar:
 
 Separar resultados aprovados, reprovados, bloqueados e não executados.
 
+### 10.1 Validação a partir de clone limpo
+
+Em 09/10/2026, a aplicação foi clonada para um diretório temporário novo. O
+clone não continha `.env` nem arquivos não versionados, e o projeto isolado do
+Compose não reutilizou volumes anteriores. A composição passou a fornecer
+valores locais padrão para conexão entre os serviços, preservando a
+possibilidade de substituí-los por variáveis externas.
+
+O comando executado foi:
+
+```powershell
+docker compose up --build --detach --wait
+```
+
+As três imagens foram construídas sem alteração manual. O PostgreSQL e o
+backend atingiram o estado saudável, o frontend permaneceu em execução e a
+interface respondeu HTTP 200. O endpoint `/health` respondeu HTTP 200 com o
+envelope JSON esperado. Os 12 testes automatizados do backend também passaram.
+
+O banco criado no clone continha as quatro tabelas do schema e nenhum servidor,
+pois os dados públicos não são versionados no repositório. Uma busca pela
+interface percorreu o proxy e a API e apresentou o estado sem resultados; a
+requisição correspondente retornou HTTP 404 em JSON de forma controlada. A
+validação comprova a inicialização autossuficiente e o funcionamento da
+aplicação com a base vazia, mas não representa uma busca positiva no conjunto
+público.
+
 ## 11. Pontos fortes da equipe
 
-[Preencher com evidências observadas durante as duas sprints.]
+- A divisão por área permaneceu estável: Pedro concentrou infraestrutura, QA e
+  gestão; Marcos, banco de dados e backend; e Alex, frontend. O histórico de
+  commits preservou essa autoria e permitiu conferir cada entrega por
+  responsável.
+- A equipe concluiu os 56 Story Points da Sprint 1 e os 57 Story Points da
+  Sprint 2. Os lotes mantiveram commits separados por task, mesmo quando duas
+  atividades relacionadas compartilharam a mesma integração.
+- As validações produziram evidências reproduzíveis. Em 04/10, os 20 cenários
+  funcionais e de erro e as 45 tentativas de SQL injection foram aprovados; os
+  testes de carga também demonstraram que o excesso de requisições era
+  rejeitado de forma controlada, sem indisponibilizar o serviço.
+- Os problemas encontrados pelo QA geraram correções no backend e no frontend.
+  Entre elas estão a padronização das respostas de erro em JSON, o bloqueio de
+  buscas sem filtro e o tratamento visual de buscas vazias ou de respostas
+  inválidas.
 
 ## 12. Pontos fracos
 
-[Preencher com evidências observadas durante as duas sprints.]
+- A cadência não foi uniforme. Houve dias sem entrega integrada e quedas
+  concentradas no burndown em 20/09, 23/09, 30/09, 04/10 e 06/10, o que reduziu
+  a visibilidade diária do avanço, embora as tasks continuassem identificadas
+  separadamente.
+- A capacidade do backend ficou limitada a duas buscas simultâneas. No cenário
+  de sobrecarga, 198 de 200 requisições foram rejeitadas com HTTP 429; o
+  comportamento preservou a aplicação, mas evidencia baixa capacidade para
+  picos de acesso.
+- Os testes de desempenho foram locais, com uma única instância do backend e
+  100.000 registros sintéticos. A equipe não mediu estabilidade prolongada,
+  distribuição entre instâncias nem o conjunto público completo, portanto os
+  resultados não representam diretamente um ambiente de produção.
+- A documentação final foi consolidada perto do encerramento da Sprint 2. Isso
+  aumentou a quantidade de informações que precisaram ser conferidas de uma só
+  vez a partir do board, do acompanhamento e do histórico Git.
 
 ## 13. Dificuldades e impedimentos
 
-[Consolidar os registros diários e explicar as ações tomadas para cada impedimento.]
+| Período | Dificuldade ou impedimento | Ação e resultado |
+|---|---|---|
+| 12/09 | A estrutura inicial não correspondia à convenção definida para a raiz do projeto. | `backend`, `frontend`, `db` e a composição foram mantidos diretamente na raiz antes da continuidade das demais tasks. |
+| 13/09 | Os três integrantes trabalhavam no mesmo computador e precisavam manter identidades distintas. | Foram usados clones e configurações de identidade separados, preservando a autoria dos commits de Pedro, Marcos e Alex. |
+| 15/09 | A validação das imagens dependia do Docker em execução. | O ambiente foi inicializado antes das verificações e essa dependência passou a ser considerada na preparação das execuções seguintes. |
+| 17 a 25/09 | Interrupções e dias sem integração acumularam entregas da Sprint 1. | As mudanças foram retomadas em lotes, mantendo commits atômicos e a identificação de cada task; a sprint encerrou em 26/09 com 56 de 56 pontos. |
+| 04/10 | Os testes de carga confirmaram a baixa capacidade para acessos simultâneos e o custo elevado da busca ampla por similaridade. | O limite de duas buscas configurado em 30/09 fez o excesso falhar de forma controlada com HTTP 429; o timeout permaneceu como proteção para consultas longas, e a busca por similaridade recebeu o ajuste de índice previsto em `BD-09/PROJ-57`. |
+
+Os dias sem entrega integrada foram mantidos explicitamente no acompanhamento e
+no burndown. Eles não foram convertidos em trabalho presumido nem em resultados
+de teste não executados.
 
 ## 14. Limitações conhecidas
 
