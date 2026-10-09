@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
   <title id="title">Burndown das Sprints 1 e 2</title>
-  <desc id="desc">A Sprint 1 iniciou com 56 story points e terminou com zero. A Sprint 2 iniciou com 57 story points e terminou com zero no corte de 9 de outubro de 2026. A linha da Sprint 2 termina no corte; os dois dias posteriores permanecem em aberto.</desc>
+  <desc id="desc">A Sprint 1 iniciou com 56 story points e terminou com zero. A Sprint 2 iniciou com 57 story points, recebeu mais 2 pontos de escopo em 9 de outubro de 2026 e terminou com 59 de 59 pontos concluídos. A linha real registra o saldo ao fim de cada dia.</desc>
 
   <rect width="1200" height="720" fill="#f7f9fb"/>
   <text x="60" y="48" fill="#17212b" font-family="Arial, sans-serif" font-size="26" font-weight="700">Burndown das Sprints 1 e 2</text>
@@ -62,7 +62,7 @@
   <rect x="470" y="410" width="62" height="26" rx="13" fill="#e8f2fb"/>
   <text x="501" y="428" fill="#004b87" font-family="Arial, sans-serif" font-size="13" font-weight="700" text-anchor="middle">0 SP</text>
 
-  <!-- Sprint 2: planejado 57 SP; saldo real até o corte: 57,49,49,49,32,32,32,32,11,11,3,3,3,0. -->
+  <!-- Sprint 2: linha-base de 57 SP; escopo final de 59 SP após +2 em 09/10; saldo real ao fim de cada dia: 57,49,49,49,32,32,32,32,11,11,3,3,3,0. -->
   <rect x="1058" y="140" width="42" height="320" fill="#e8edf1" opacity="0.75"/>
   <line x1="680" y1="156" x2="1100" y2="460" stroke="#9a6700" stroke-width="3" stroke-dasharray="8 6"/>
   <line x1="1044" y1="140" x2="1044" y2="460" stroke="#6f7c87" stroke-width="1.5" stroke-dasharray="4 5"/>
@@ -80,6 +80,7 @@
   </g>
   <rect x="1007" y="411" width="74" height="26" rx="13" fill="#e8f2fb"/>
   <text x="1044" y="429" fill="#004b87" font-family="Arial, sans-serif" font-size="13" font-weight="700" text-anchor="middle">0 SP</text>
+  <text x="1036" y="393" fill="#536270" font-family="Arial, sans-serif" font-size="11" text-anchor="end">+2 SP no escopo; 5 SP concluídos</text>
 
   <rect x="50" y="520" width="340" height="105" rx="10" fill="#ffffff" stroke="#cbd5df"/>
   <text x="72" y="550" fill="#536270" font-family="Arial, sans-serif" font-size="13">Sprint 1</text>
@@ -88,14 +89,14 @@
 
   <rect x="430" y="520" width="340" height="105" rx="10" fill="#ffffff" stroke="#cbd5df"/>
   <text x="452" y="550" fill="#536270" font-family="Arial, sans-serif" font-size="13">Sprint 2</text>
-  <text x="452" y="585" fill="#17212b" font-family="Arial, sans-serif" font-size="28" font-weight="700">57/57 SP</text>
+  <text x="452" y="585" fill="#17212b" font-family="Arial, sans-serif" font-size="28" font-weight="700">59/59 SP</text>
   <text x="452" y="609" fill="#2e6b45" font-family="Arial, sans-serif" font-size="13">concluída em 09/10</text>
 
   <rect x="810" y="520" width="340" height="105" rx="10" fill="#ffffff" stroke="#cbd5df"/>
   <text x="832" y="550" fill="#536270" font-family="Arial, sans-serif" font-size="13">Escopo considerado</text>
-  <text x="832" y="581" fill="#17212b" font-family="Arial, sans-serif" font-size="19" font-weight="700">Backlog das duas sprints</text>
+  <text x="832" y="581" fill="#17212b" font-family="Arial, sans-serif" font-size="19" font-weight="700">115 SP obrigatórios</text>
   <text x="832" y="609" fill="#536270" font-family="Arial, sans-serif" font-size="13">BONUS-01 excluída do cálculo</text>
 
   <text x="60" y="665" fill="#536270" font-family="Arial, sans-serif" font-size="12">Fonte: backlog_sprints.md, acompanhamento da Sprint 1 e histórico Git sem commits de merge.</text>
-  <text x="60" y="686" fill="#536270" font-family="Arial, sans-serif" font-size="12">A linha real da Sprint 2 termina no corte; nenhum valor foi projetado para 10–11/10.</text>
+  <text x="60" y="686" fill="#536270" font-family="Arial, sans-serif" font-size="12">Sprint 2: linha-base de 57 SP e escopo final de 59 SP após a inclusão de PROJ-72 em 09/10.</text>
 </svg>
