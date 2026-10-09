@@ -311,15 +311,54 @@ Separar resultados aprovados, reprovados, bloqueados e não executados.
 
 ## 11. Pontos fortes da equipe
 
-[Preencher com evidências observadas durante as duas sprints.]
+- A divisão por área permaneceu estável: Pedro concentrou infraestrutura, QA e
+  gestão; Marcos, banco de dados e backend; e Alex, frontend. O histórico de
+  commits preservou essa autoria e permitiu conferir cada entrega por
+  responsável.
+- A equipe concluiu os 56 Story Points da Sprint 1 e chegou a 06/10 com 54 dos
+  57 Story Points da Sprint 2 entregues. Os lotes mantiveram commits separados
+  por task, mesmo quando duas atividades relacionadas compartilharam a mesma
+  integração.
+- As validações produziram evidências reproduzíveis. Em 04/10, os 20 cenários
+  funcionais e de erro e as 45 tentativas de SQL injection foram aprovados; os
+  testes de carga também demonstraram que o excesso de requisições era
+  rejeitado de forma controlada, sem indisponibilizar o serviço.
+- Os problemas encontrados pelo QA geraram correções no backend e no frontend.
+  Entre elas estão a padronização das respostas de erro em JSON, o bloqueio de
+  buscas sem filtro e o tratamento visual de buscas vazias ou de respostas
+  inválidas.
 
 ## 12. Pontos fracos
 
-[Preencher com evidências observadas durante as duas sprints.]
+- A cadência não foi uniforme. Houve dias sem entrega integrada e quedas
+  concentradas no burndown em 20/09, 23/09, 30/09, 04/10 e 06/10, o que reduziu
+  a visibilidade diária do avanço, embora as tasks continuassem identificadas
+  separadamente.
+- A capacidade do backend ficou limitada a duas buscas simultâneas. No cenário
+  de sobrecarga, 198 de 200 requisições foram rejeitadas com HTTP 429; o
+  comportamento preservou a aplicação, mas evidencia baixa capacidade para
+  picos de acesso.
+- Os testes de desempenho foram locais, com uma única instância do backend e
+  100.000 registros sintéticos. A equipe não mediu estabilidade prolongada,
+  distribuição entre instâncias nem o conjunto público completo, portanto os
+  resultados não representam diretamente um ambiente de produção.
+- A documentação final foi consolidada perto do encerramento da Sprint 2. Isso
+  aumentou a quantidade de informações que precisaram ser conferidas de uma só
+  vez a partir do board, do acompanhamento e do histórico Git.
 
 ## 13. Dificuldades e impedimentos
 
-[Consolidar os registros diários e explicar as ações tomadas para cada impedimento.]
+| Período | Dificuldade ou impedimento | Ação e resultado |
+|---|---|---|
+| 12/09 | A estrutura inicial não correspondia à convenção definida para a raiz do projeto. | `backend`, `frontend`, `db` e a composição foram mantidos diretamente na raiz antes da continuidade das demais tasks. |
+| 13/09 | Os três integrantes trabalhavam no mesmo computador e precisavam manter identidades distintas. | Foram usados clones e configurações de identidade separados, preservando a autoria dos commits de Pedro, Marcos e Alex. |
+| 15/09 | A validação das imagens dependia do Docker em execução. | O ambiente foi inicializado antes das verificações e essa dependência passou a ser considerada na preparação das execuções seguintes. |
+| 17 a 25/09 | Interrupções e dias sem integração acumularam entregas da Sprint 1. | As mudanças foram retomadas em lotes, mantendo commits atômicos e a identificação de cada task; a sprint encerrou em 26/09 com 56 de 56 pontos. |
+| 04/10 | Os testes de carga revelaram limite de concorrência e custo elevado na busca ampla por similaridade. | Foram aplicados limite de duas buscas simultâneas, timeout de consulta e ajuste do índice de similaridade. A sobrecarga passou a falhar de forma controlada com HTTP 429. |
+
+Os dias sem entrega integrada foram mantidos explicitamente no acompanhamento e
+no burndown. Eles não foram convertidos em trabalho presumido nem em resultados
+de teste não executados.
 
 ## 14. Limitações conhecidas
 
