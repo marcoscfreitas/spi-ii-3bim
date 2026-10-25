@@ -1,0 +1,46 @@
+services:
+  db:
+    build: ./db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-servidores}
+      POSTGRES_USER: ${DB_USER:-servidores}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-troque_esta_senha}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-servidores}
+      DB_USER: ${DB_USER:-servidores}
+      DB_PASSWORD: ${DB_PASSWORD:-troque_esta_senha}
+      API_MAX_CONCURRENT_REQUESTS: ${API_MAX_CONCURRENT_REQUESTS:-2}
+      DB_STATEMENT_TIMEOUT_MS: ${DB_STATEMENT_TIMEOUT_MS:-2000}
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      API_PROXY_TARGET: http://backend:8000
+    ports:
+      - "5173:4173"
